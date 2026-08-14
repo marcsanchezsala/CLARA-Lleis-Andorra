@@ -1,0 +1,28 @@
+# CLARA — Corpus Legal Andorrà amb Recuperació Augmentada
+# Instal·lació: pip install -r requirements.txt
+
+# Web Scraping
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# PDF Parsing
+
+# Chunking
+pydantic
+rank-bm25
+sentence-transformers
+
+# Embeddings
+
+# Vector Store
+chromadb>=0.5.0
+
+# UI
+chainlit
+
+# Utilitats
+langchain-core
+langchain-ollama
+langgraph
+
+# Exploració (notebooks)
