@@ -43,9 +43,21 @@ from sentence_transformers import CrossEncoder, SentenceTransformer
 # CONFIGURACIÓ GLOBAL
 # ---------------------------------------------------------------------------
 
-CHUNKS_PATH = Path("data/chunks.jsonl")
-BM25_INDEX_PATH = Path("data/bm25_index.pkl")
-CHROMA_PERSIST_DIR = Path("data/chroma_db")
+def _resolve_data_path(path: str | Path) -> Path:
+    """Resol la ruta comprovant el directori actual i l'arrel del repositori."""
+    p = Path(path)
+    if p.exists():
+        return p
+    repo_root = Path(__file__).resolve().parent.parent
+    candidate = repo_root / p
+    if candidate.exists():
+        return candidate
+    return p
+
+
+CHUNKS_PATH = _resolve_data_path("data/chunks.jsonl")
+BM25_INDEX_PATH = _resolve_data_path("data/bm25_index.pkl")
+CHROMA_PERSIST_DIR = _resolve_data_path("data/chroma_db")
 COLLECTION_NAME = "lleis_andorra"
 
 EMBEDDING_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
@@ -141,6 +153,10 @@ class LegalRetriever:
         cross_encoder_model_name: str = CROSS_ENCODER_MODEL_NAME,
     ) -> None:
         print("[LegalRetriever] Carregant recursos...")
+
+        chunks_path = _resolve_data_path(chunks_path)
+        bm25_index_path = _resolve_data_path(bm25_index_path)
+        chroma_persist_dir = _resolve_data_path(chroma_persist_dir)
 
         # --- 1. Diccionari chunk_id -> dades del chunk (accés O(1)) ---
         self.chunks_dict: Dict[str, dict] = self._carregar_chunks_dict(chunks_path)
