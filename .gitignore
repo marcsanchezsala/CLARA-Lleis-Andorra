@@ -1,1 +1,20 @@
+# Data & Model weights
 /data
+*.gguf
+*.bin
+*.safetensors
+*.pkl
+
+# Python artifacts
+__pycache__/
+*.pyc
+
+# Environment & Config
+.venv/
+.env
+
+# Chainlit
+.chainlit/run/
+
+# Logs
+*.log

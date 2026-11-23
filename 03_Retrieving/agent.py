@@ -18,6 +18,7 @@ Autor: Ingeniero de Datos - Sistemas RAG Agénticos
 from __future__ import annotations
 
 import asyncio
+import os
 from typing import List, TypedDict
 
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -38,12 +39,11 @@ except ImportError:  # pragma: no cover - fallback para ejecución directa
 # 0. CONFIGURACIÓN DEL MODELO
 # ==============================================================================
 
-# Modelo local Qwen2.5:7b servido vía Ollama.
-# temperature=0.0 para las tareas deterministas (rewrite, evaluación).
-LLM_REWRITE = ChatOllama(model="qwen2.5:7b", temperature=0.0)
-LLM_EVALUATE = ChatOllama(model="qwen2.5:7b", temperature=0.0)
-# Para la generación final se permite algo más de flexibilidad de redacción.
-LLM_GENERATE = ChatOllama(model="qwen2.5:7b", temperature=0.2)
+# Modelo Ollama configurable mediante variables de entorno (por defecto clara / qwen2.5:7b)
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "clara")
+LLM_REWRITE = ChatOllama(model=os.getenv("OLLAMA_REWRITE_MODEL", "qwen2.5:7b"), temperature=0.0)
+LLM_EVALUATE = ChatOllama(model=os.getenv("OLLAMA_EVALUATE_MODEL", "qwen2.5:7b"), temperature=0.0)
+LLM_GENERATE = ChatOllama(model=OLLAMA_MODEL, temperature=0.2)
 
 
 # ==============================================================================
